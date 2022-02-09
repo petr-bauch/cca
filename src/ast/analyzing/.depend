@@ -1,0 +1,42 @@
+astcore.cmo :
+astcore.cmx :
+diffast.cmo : \
+    diffastcore.cmo \
+    astcore.cmo
+diffast.cmx : \
+    diffastcore.cmx \
+    astcore.cmx
+diffast_ws.cmo : \
+    astcore.cmo
+diffast_ws.cmx : \
+    astcore.cmx
+diffastcore.cmo :
+diffastcore.cmx :
+git_diffast.cmo : \
+    git_storage.cmo \
+    diffastcore.cmo \
+    astcore.cmo
+git_diffast.cmx : \
+    git_storage.cmx \
+    diffastcore.cmx \
+    astcore.cmx
+git_storage.cmo :
+git_storage.cmx :
+netplex.cmo : \
+    diffast_ws.cmo
+netplex.cmx : \
+    diffast_ws.cmx
+parsesrc.cmo : \
+    astcore.cmo
+parsesrc.cmx : \
+    astcore.cmx
+patchast.cmo : \
+    diffastcore.cmo
+patchast.cmx : \
+    diffastcore.cmx
+simast.cmo : \
+    diffastcore.cmo \
+    astcore.cmo
+simast.cmx : \
+    diffastcore.cmx \
+    astcore.cmx

@@ -1,0 +1,80 @@
+ast_base.cmo : \
+    ast_base.cmi
+ast_base.cmx : \
+    ast_base.cmi
+ast_base.cmi :
+astloc.cmo : \
+    astloc.cmi
+astloc.cmx : \
+    astloc.cmi
+astloc.cmi : \
+    fname.cmi
+compat.cmo : \
+    astloc.cmi \
+    compat.cmi
+compat.cmx : \
+    astloc.cmx \
+    compat.cmi
+compat.cmi : \
+    astloc.cmi
+env_base.cmo : \
+    env_base.cmi
+env_base.cmx : \
+    env_base.cmi
+env_base.cmi : \
+    source_base.cmi \
+    regions.cmo \
+    position.cmi \
+    compat.cmi
+fname.cmo : \
+    fname.cmi
+fname.cmx : \
+    fname.cmi
+fname.cmi :
+layeredloc.cmo : \
+    layeredloc.cmi
+layeredloc.cmx : \
+    layeredloc.cmi
+layeredloc.cmi : \
+    fname.cmi \
+    astloc.cmi
+macro_base.cmo : \
+    macro_base.cmi
+macro_base.cmx : \
+    macro_base.cmi
+macro_base.cmi : \
+    astloc.cmi
+parserlib_base.cmo : \
+    parserlib_base.cmi
+parserlib_base.cmx : \
+    parserlib_base.cmi
+parserlib_base.cmi : \
+    source_base.cmi \
+    fname.cmi \
+    env_base.cmi \
+    astloc.cmi
+position.cmo : \
+    astloc.cmi \
+    position.cmi
+position.cmx : \
+    astloc.cmx \
+    position.cmi
+position.cmi : \
+    astloc.cmi
+ranges.cmo :
+ranges.cmx :
+regions.cmo :
+regions.cmx :
+source_base.cmo : \
+    source_base.cmi
+source_base.cmx : \
+    source_base.cmi
+source_base.cmi : \
+    position.cmi \
+    compat.cmi \
+    astloc.cmi
+unparsing_base.cmo : \
+    unparsing_base.cmi
+unparsing_base.cmx : \
+    unparsing_base.cmi
+unparsing_base.cmi :
