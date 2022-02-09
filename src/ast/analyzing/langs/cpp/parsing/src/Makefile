@@ -140,3 +140,4 @@ ifneq ($(MAKECMDGOALS), distclean)
 endif
 endif
 
+include .depend

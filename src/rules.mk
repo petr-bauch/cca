@@ -16,7 +16,7 @@ OCAMLC    = $(CAML_PREFIX)ocamlc.opt
 OCAMLCP   = $(CAML_PREFIX)ocamlcp
 OCAMLYACC = $(CAML_PREFIX)ocamlyacc
 OCAMLLEX  = $(CAML_PREFIX)ocamllex.opt
-OCAMLDEP  = $(CAML_PREFIX)ocamldep.opt
+OCAMLDEP  = ocamldep
 OCAMLOPT  = $(CAML_PREFIX)ocamlopt.opt
 MENHIR    = $(CAML_PREFIX)menhir
 
