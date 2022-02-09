@@ -1,0 +1,240 @@
+GIDfragment.cmo :
+GIDfragment.cmx :
+LCfragment.cmo : \
+    LCrange.cmo \
+    fragment.cmo
+LCfragment.cmx : \
+    LCrange.cmx \
+    fragment.cmx
+LCrange.cmo : \
+    region.cmo \
+    range.cmo
+LCrange.cmx : \
+    region.cmx \
+    range.cmx
+Lfragment.cmo : \
+    Lrange.cmo \
+    fragment.cmo
+Lfragment.cmx : \
+    Lrange.cmx \
+    fragment.cmx
+Lrange.cmo : \
+    region.cmo \
+    range.cmo
+Lrange.cmx : \
+    region.cmx \
+    range.cmx
+UIDmapping.cmo :
+UIDmapping.cmx :
+adiff.cmo :
+adiff.cmx :
+astml.cmo : \
+    loc.cmi \
+    astml.cmi
+astml.cmx : \
+    loc.cmx \
+    astml.cmi
+astml.cmi : \
+    loc.cmi
+base_options.cmo :
+base_options.cmx :
+basic_options.cmo : \
+    hash_options.cmo \
+    fs_options.cmo \
+    base_options.cmo
+basic_options.cmx : \
+    hash_options.cmx \
+    fs_options.cmx \
+    base_options.cmx
+binding.cmo : \
+    loc.cmi \
+    binding.cmi
+binding.cmx : \
+    loc.cmx \
+    binding.cmi
+binding.cmi : \
+    loc.cmi
+cache.cmo :
+cache.cmx :
+change_base.cmo :
+change_base.cmx :
+charpool.cmo :
+charpool.cmx :
+comparison.cmo :
+comparison.cmx :
+const.cmo :
+const.cmx :
+delta.cmo :
+delta.cmx :
+delta_base.cmo :
+delta_base.cmx :
+delta_common.cmo :
+delta_common.cmx :
+delta_format.cmo :
+delta_format.cmx :
+delta_interpret.cmo :
+delta_interpret.cmx :
+delta_options.cmo :
+delta_options.cmx :
+edit_base.cmo :
+edit_base.cmx :
+editop.cmo : \
+    moveid.cmo \
+    info.cmo
+editop.cmx : \
+    moveid.cmx \
+    info.cmx
+engine_options.cmo : \
+    moveid.cmo \
+    const.cmo
+engine_options.cmx : \
+    moveid.cmx \
+    const.cmx
+entity.cmo :
+entity.cmx :
+fact_base.cmo :
+fact_base.cmx :
+fact_options.cmo : \
+    hash_options.cmo \
+    entity.cmo
+fact_options.cmx : \
+    hash_options.cmx \
+    entity.cmx
+fragment.cmo : \
+    region.cmo \
+    range.cmo
+fragment.cmx : \
+    region.cmx \
+    range.cmx
+fs.cmo :
+fs.cmx :
+fs_options.cmo :
+fs_options.cmx :
+hash_options.cmo :
+hash_options.cmx :
+info.cmo :
+info.cmx :
+key.cmo :
+key.cmx :
+lang.cmo : \
+    UIDmapping.cmo \
+    triple.cmo \
+    storage.cmi \
+    stat.cmo \
+    spec_base.cmo \
+    spec.cmo \
+    options.cmo \
+    lang_base.cmo \
+    editop.cmo \
+    edit_base.cmo \
+    comparison.cmo \
+    change_base.cmo \
+    cache.cmo
+lang.cmx : \
+    UIDmapping.cmx \
+    triple.cmx \
+    storage.cmx \
+    stat.cmx \
+    spec_base.cmx \
+    spec.cmx \
+    options.cmx \
+    lang_base.cmx \
+    editop.cmx \
+    edit_base.cmx \
+    comparison.cmx \
+    change_base.cmx \
+    cache.cmx
+lang_base.cmo :
+lang_base.cmx :
+loc.cmo : \
+    loc.cmi
+loc.cmx : \
+    loc.cmi
+loc.cmi :
+misc.cmo :
+misc.cmx :
+moveid.cmo :
+moveid.cmx :
+options.cmo : \
+    storage.cmi \
+    parser_options.cmo \
+    engine_options.cmo \
+    delta_options.cmo \
+    cache.cmo
+options.cmx : \
+    storage.cmx \
+    parser_options.cmx \
+    engine_options.cmx \
+    delta_options.cmx \
+    cache.cmx
+origin.cmo :
+origin.cmx :
+parser_options.cmo : \
+    storage.cmi \
+    misc.cmo \
+    fs_options.cmo \
+    fact_options.cmo \
+    cache.cmo \
+    base_options.cmo
+parser_options.cmx : \
+    storage.cmx \
+    misc.cmx \
+    fs_options.cmx \
+    fact_options.cmx \
+    cache.cmx \
+    base_options.cmx
+proximity.cmo :
+proximity.cmx :
+range.cmo : \
+    region.cmo
+range.cmx : \
+    region.cmx
+region.cmo :
+region.cmx :
+sourcecode.cmo :
+sourcecode.cmx :
+spec.cmo : \
+    storage.cmi \
+    spec_base.cmo \
+    parser_options.cmo \
+    loc.cmi \
+    key.cmo \
+    GIDfragment.cmo \
+    entity.cmo \
+    binding.cmi
+spec.cmx : \
+    storage.cmx \
+    spec_base.cmx \
+    parser_options.cmx \
+    loc.cmx \
+    key.cmx \
+    GIDfragment.cmx \
+    entity.cmx \
+    binding.cmx
+spec_base.cmo : \
+    storage.cmi \
+    moveid.cmo \
+    loc.cmi \
+    binding.cmi
+spec_base.cmx : \
+    storage.cmx \
+    moveid.cmx \
+    loc.cmx \
+    binding.cmx
+stat.cmo : \
+    entity.cmo \
+    delta_base.cmo \
+    cache.cmo
+stat.cmx : \
+    entity.cmx \
+    delta_base.cmx \
+    cache.cmx
+storage.cmo : \
+    storage.cmi
+storage.cmx : \
+    storage.cmi
+storage.cmi :
+treediff.cmo :
+treediff.cmx :
+triple.cmo :
+triple.cmx :

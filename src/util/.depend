@@ -1,0 +1,114 @@
+HCS.cmo : \
+    weight.cmo
+HCS.cmx : \
+    weight.cmx
+HIS.cmo : \
+    weight.cmo
+HIS.cmx : \
+    weight.cmx
+LCS.cmo :
+LCS.cmx :
+LLL.cmo :
+LLL.cmx :
+SMP.cmo : \
+    xlist.cmi \
+    weight.cmo
+SMP.cmx : \
+    xlist.cmx \
+    weight.cmx
+XML.cmo : \
+    xprint.cmi \
+    xchannel.cmo \
+    compression.cmi \
+    XML.cmi
+XML.cmx : \
+    xprint.cmx \
+    xchannel.cmx \
+    compression.cmx \
+    XML.cmi
+XML.cmi : \
+    xchannel.cmo \
+    compression.cmi
+compression.cmo : \
+    xfile.cmo \
+    compression.cmi
+compression.cmx : \
+    xfile.cmx \
+    compression.cmi
+compression.cmi :
+inst.cmo :
+inst.cmx :
+test_HCS.cmo : \
+    xlist.cmi \
+    HCS.cmo
+test_HCS.cmx : \
+    xlist.cmx \
+    HCS.cmx
+test_HIS.cmo : \
+    xlist.cmi \
+    HIS.cmo
+test_HIS.cmx : \
+    xlist.cmx \
+    HIS.cmx
+test_SMP.cmo : \
+    SMP.cmo
+test_SMP.cmx : \
+    SMP.cmx
+test_XML.cmo : \
+    XML.cmi
+test_XML.cmx : \
+    XML.cmx
+weight.cmo :
+weight.cmx :
+xarray.cmo : \
+    xlist.cmi \
+    xarray.cmi
+xarray.cmx : \
+    xlist.cmx \
+    xarray.cmi
+xarray.cmi :
+xchannel.cmo : \
+    compression.cmi
+xchannel.cmx : \
+    compression.cmx
+xfile.cmo :
+xfile.cmx :
+xhash.cmo : \
+    xfile.cmo \
+    xhash.cmi
+xhash.cmx : \
+    xfile.cmx \
+    xhash.cmi
+xhash.cmi :
+xlist.cmo : \
+    xlist.cmi
+xlist.cmx : \
+    xlist.cmi
+xlist.cmi :
+xoption.cmo : \
+    xoption.cmi
+xoption.cmx : \
+    xoption.cmi
+xoption.cmi :
+xprint.cmo : \
+    xprint.cmi
+xprint.cmx : \
+    xprint.cmi
+xprint.cmi :
+xqueue.cmo : \
+    xqueue.cmi
+xqueue.cmx : \
+    xqueue.cmi
+xqueue.cmi :
+xset.cmo : \
+    xset.cmi
+xset.cmx : \
+    xset.cmi
+xset.cmi :
+xstring.cmo : \
+    xstring.cmi
+xstring.cmx : \
+    xstring.cmi
+xstring.cmi :
+xthread.cmo :
+xthread.cmx :

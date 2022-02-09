@@ -1,0 +1,58 @@
+ast.cmo :
+ast.cmx :
+common.cmo :
+common.cmx :
+context.cmo :
+context.cmx :
+label.cmo : \
+    common.cmo
+label.cmx : \
+    common.cmx
+lib.cmo : \
+    lib.cmi
+lib.cmx : \
+    lib.cmi
+lib.cmi : \
+    source.cmo \
+    parser_aux.cmo \
+    context.cmo \
+    ast.cmo
+main.cmo : \
+    parser_aux.cmo \
+    lib.cmi \
+    ast.cmo
+main.cmx : \
+    parser_aux.cmx \
+    lib.cmx \
+    ast.cmx
+parser_aux.cmo :
+parser_aux.cmx :
+pinfo.cmo :
+pinfo.cmx :
+scanner.cmo : \
+    scanner.cmi
+scanner.cmx : \
+    scanner.cmi
+scanner.cmi : \
+    tokens_.cmo \
+    pinfo.cmo \
+    parser_aux.cmo \
+    context.cmo \
+    ast.cmo
+source.cmo :
+source.cmx :
+token.cmo : \
+    tokens_.cmo \
+    ast.cmo
+token.cmx : \
+    tokens_.cmx \
+    ast.cmx
+tokens_.cmo :
+tokens_.cmx :
+ulexer.cmo : \
+    ulexer.cmi
+ulexer.cmx : \
+    ulexer.cmi
+ulexer.cmi : \
+    tokens_.cmo \
+    parser_aux.cmo
