@@ -16,7 +16,7 @@ GIT_DIFFAST_CMD = $(BIN_DIR)/ogit.byte
 
 LANGS_DIR = langs
 #LANGS = $(shell ls $(LANGS_DIR))
-LANGS = astml python java verilog fortran cpp
+LANGS = astml cpp
 #LANGS = astml java cpp
 
 LANG_DIRS     = $(foreach lang,$(LANGS),$(LANGS_DIR)/$(lang))
@@ -141,7 +141,8 @@ git-production: PACKAGES := $(PACKAGES_GIT_DIFFAST)
 git-production: $(GIT_DIFFAST_CMD_OPT)
 
 
-opt: subs-opt $(DIFFAST_CMD_OPT) git-opt $(PATCHAST_CMD_OPT) $(PARSESRC_CMD_OPT) $(SIMAST_CMD_OPT)
+#opt: subs-opt $(DIFFAST_CMD_OPT) git-opt $(PATCHAST_CMD_OPT) $(PARSESRC_CMD_OPT) $(SIMAST_CMD_OPT)
+opt: $(PARSESRC_CMD_OPT)
 
 ws-opt: subs-opt
 ws-opt: PACKAGES := $(PACKAGES_WS)
@@ -268,3 +269,5 @@ ifneq ($(MAKECMDGOALS), distclean)
 -include $(OBJS_DEP:%.cmo=$(DEP)/%.d) $(MLI:%.mli=$(DEP)/%.di)
 endif
 endif
+
+include .depend

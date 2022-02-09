@@ -1,0 +1,58 @@
+GIndex.cmo :
+GIndex.cmx :
+LACS.cmo :
+LACS.cmx : \
+    common.cmx \
+    otree.cmx \
+    edit.cmx
+UID.cmo :
+UID.cmx :
+ZS.cmo :
+ZS.cmx : \
+    edit.cmx
+clustering.cmo : \
+    otree.cmo \
+    edit.cmo \
+    common.cmo
+clustering.cmx : \
+    otree.cmx \
+    edit.cmx \
+    common.cmx
+common.cmo :
+common.cmx :
+edit.cmo : \
+    otree.cmo \
+    common.cmo
+edit.cmx : \
+    otree.cmx \
+    common.cmx
+lib.cmo :
+lib.cmx : \
+    common.cmx \
+    edit.cmx
+mapping.cmo : \
+    otree.cmo \
+    common.cmo
+mapping.cmx : \
+    otree.cmx \
+    common.cmx
+otree.cmo :
+otree.cmx : \
+    common.cmx \
+    path.cmx
+path.cmo :
+path.cmx :
+test.cmo : \
+    ZS.cmo \
+    UID.cmo \
+    otree.cmo \
+    mapping.cmo \
+    edit.cmo \
+    common.cmo
+test.cmx : \
+    ZS.cmx \
+    UID.cmx \
+    otree.cmx \
+    mapping.cmx \
+    edit.cmx \
+    common.cmx
