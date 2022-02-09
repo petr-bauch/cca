@@ -97,3 +97,5 @@ ifneq ($(MAKECMDGOALS), distclean)
 -include $(OBJS:%.cmo=$(DEP)/%.d) $(OBJS_P:%.cmo=$(DEP)/%.d) $(MLI:%.mli=$(DEP)/%.di)
 endif
 endif
+
+include .depend

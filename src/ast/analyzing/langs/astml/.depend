@@ -1,0 +1,34 @@
+Sastml.cmo :
+Sastml.cmx :
+change.cmo : \
+    label.cmo
+change.cmx : \
+    label.cmx
+common.cmo :
+common.cmx :
+conf.cmo :
+conf.cmx :
+fact.cmo :
+fact.cmx :
+label.cmo :
+label.cmx :
+lib.cmo : \
+    Sastml.cmo \
+    lib_base.cmo \
+    label.cmo \
+    change.cmo
+lib.cmx : \
+    Sastml.cmx \
+    lib_base.cmx \
+    label.cmx \
+    change.cmx
+lib_base.cmo :
+lib_base.cmx :
+lib_p.cmo : \
+    Sastml.cmo \
+    lib_base.cmo
+lib_p.cmx : \
+    Sastml.cmx \
+    lib_base.cmx
+tree.cmo :
+tree.cmx :
