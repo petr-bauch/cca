@@ -27,6 +27,7 @@ let get_cache_dir_only = ref false
 
 let filenames = (ref [] : string list ref)
 let keyword = ref ""
+let use_std_channels = ref false
 
 
 (* setters *)
@@ -113,6 +114,8 @@ let speclist =
 (* output *)
    "-dump:ast", Arg.Unit set_dump_ast_flags, "\tdump AST";
    "-dump:ast:compress", Arg.Unit set_dump_compressed_ast_flags, "\tdump compressed AST";
+
+   "-use_std_channels", Arg.Set use_std_channels,"\tuse stdin/stdout";
 
 (* cache *)
    "-cache", Arg.String options#set_cache_dir_base,
@@ -210,6 +213,10 @@ let astcore =
 
 
 let _ =
+  if !use_std_channels then begin
+    let _ = astcore#parse_stdin in ()
+  end
+  else begin
   if !keyword <> "" then begin
     try
       match !filenames with
@@ -296,4 +303,5 @@ let _ =
     | Failure msg                       -> Xprint.error ~head:"[FAILURE]" "%s" msg; exit 1
     | Lang_base.Error msg               -> Xprint.error "%s" msg; exit 1
 (*      | e                           -> Xprint.error ~head:"[EXCEPTION]" "%s" (Printexc.to_string e); exit 1*)
+  end
   end

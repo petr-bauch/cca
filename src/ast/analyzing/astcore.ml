@@ -53,6 +53,7 @@ class virtual base_c options = object (self)
   val extra_source_file_tbl2 = Hashtbl.create 0
 
   method virtual __parse_file : ?proj_root:string -> ?version:Entity.version -> Storage.file -> Spec.tree_t
+  method virtual __parse_stdin : Spec.tree_t
 
   method private _add_extra_source_file tbl ext file =
     let fp = file#fullpath in
@@ -163,7 +164,9 @@ class virtual base_c options = object (self)
     in
     Csv.save path csv
 
-
+  method parse_stdin =
+    let r = self#_parse_stdin in
+    r
 
   method parse_file
       ?(fact_store=None)
@@ -224,6 +227,10 @@ class virtual base_c options = object (self)
       end
     end
 
+
+    method _parse_stdin =
+      let tree = self#__parse_stdin in
+      tree#dump_astml_stdout;
 
   method _parse_file
       ?(fact_store=None)
@@ -411,6 +418,13 @@ class c options = object (self)
 
   method __force_to_process =
     options#dump_ast_flag || options#clear_cache_flag
+
+  method __parse_stdin =
+     let ext = "cpp" in
+    let lang = Lang_base.search options ext in
+    let builder = lang#make_tree_builder options in
+    let tree = builder#build_tree_stdin in
+    tree
 
   method __parse_file ?(proj_root="") ?(version=Entity.unknown_version) file =
     DEBUG_MSG "parsing \"%s\"" file#fullpath;
