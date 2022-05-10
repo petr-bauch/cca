@@ -161,6 +161,10 @@ let build_tree options file =
   tree
 (* end of func build_tree *)
 
+let build_tree_stdin options =
+  let file = Fs.file_of_path options "/tmp" in
+  let tree = build_tree options file in
+  tree
 
 
 type astml_header =
@@ -281,6 +285,7 @@ class tree_builder options = object (self)
   inherit Lang_base.tree_builder
   method from_xnode = T.of_xnode options
   method build_tree file = build_tree options file
+  method build_tree_stdin = build_tree_stdin options
 end
 
 
@@ -337,4 +342,7 @@ class ext_tree_builder xpname options = object (self)
     end
 
   method build_tree file = build_tree options (self#get_astml_file file)
+
+  method build_tree_stdin = build_tree_stdin options
+
 end
