@@ -32,6 +32,17 @@ class tree_builder options =
 
     method from_xnode = Tree.of_xnode options
 
+    method build_tree_stdin =
+      try
+        let ast = _parser#parse_stdin in
+        let tree = Cpp_tree.of_ast options ast in
+        tree#set_parser_name Scpp.parser_name;
+        tree
+      with
+        Parserlib_base.Parse_error(head, msg) ->
+        raise (Lang_base.Parse_error ("[Cpp]"^head, msg))
+
+
     method build_tree file =
       Xprint.verbose options#verbose_flag "parsing \"%s\"...%!" file#fullpath;
       _parser#add_search_path file#dirname;

@@ -2356,6 +2356,71 @@ class [ 'node ] otree2 ?(hash=Xhash.MD5) (root : 'node) (is_whole : bool) =
       with 
 	Empty -> "<empty>"
 
+    method dump_xml_stdout
+      =
+      let initial = false in
+      let _printf fmt = printf fmt in
+
+      let attrs_to_string attrs =
+	      String.concat "" (List.map (fun (a, v) -> sprintf " %s='%s'" a v) attrs)
+      in
+      let get_gid nd =
+	      if nd#data#gid > 0 then 
+	        nd#data#gid 
+	      else 
+	        nd#gindex 
+      in
+      let get_elem_data nd =
+	      let name, _attrs, content = nd#data#to_elem_data in
+	      let attrs =
+	        let gid = get_gid nd in
+	        (cca_prefix^":apath",Path.to_string nd#apath)::
+          (cca_prefix^":"^gid_attr_name,GI.to_string gid)::
+          _attrs 
+	      in
+	      name, attrs, content
+      in
+
+      let rec put nd =
+	      let children =
+          if initial then
+            nd#initial_children
+          else
+            nd#children
+        in
+	      let name, attrs, content = get_elem_data nd in
+
+	      if children = [||] then
+	        _printf "<%s%s/>" name (attrs_to_string attrs)
+	      else begin
+	        _printf "<%s%s>" name (attrs_to_string attrs);
+          _printf "%s" content;
+	        Array.iter put children;
+	        _printf "</%s>" name
+	      end
+      in
+
+      let name, _attrs, content = get_elem_data self#root in
+      let attrs = 
+	List.filter
+	  (fun (a, v) ->
+	    v <> ""
+	  ) (("xmlns:"^cca_prefix,cca_ns)::_attrs)
+      in
+      let children =
+        if initial then
+          self#root#initial_children
+        else
+          self#root#children
+      in
+      if children = [||] then
+	      _printf "<%s%s/>" name (attrs_to_string attrs)
+      else begin
+	      _printf "<%s%s>" name (attrs_to_string attrs);
+        _printf "%s" content;
+	      Array.iter put children;
+	      _printf "</%s>" name
+      end;
 
     method dump_xml_ch ?(initial=false) ?(pre_tags="") ?(post_tags="") (ch : Xchannel.out_channel) 
         =
@@ -2429,6 +2494,7 @@ class [ 'node ] otree2 ?(hash=Xhash.MD5) (root : 'node) (is_whole : bool) =
       
       _output_string post_tags
 
+    method save_in_stdout = self#dump_xml_stdout
 
     method save_in_xml ?(initial=false) ?(comp=Comp.none) ?(add_ext=true) ?(pre_tags="") ?(post_tags="") fname = 
       Xchannel.dump ~comp ~add_ext fname (self#dump_xml_ch ~initial ~pre_tags ~post_tags)

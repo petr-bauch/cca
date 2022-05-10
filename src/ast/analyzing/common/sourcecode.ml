@@ -744,6 +744,8 @@ module Tree (L : Spec.LABEL_T) = struct
       in
       attrs_to_string l
 
+    method dump_astml_stdout = super#save_in_stdout
+
     method dump_astml ?(comp=C.none) fname =
       let pre_tags = sprintf "<%s%s>" Astml.astml_tag self#get_attrs in
       let post_tags = sprintf "</%s>" Astml.astml_tag in

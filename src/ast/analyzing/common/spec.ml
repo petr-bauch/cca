@@ -130,6 +130,7 @@ class type tree_t = object ('self)
   method set_parser_name          : string -> unit
 
   method dump_astml               : ?comp:Compression.c -> string -> unit
+  method dump_astml_stdout        : unit
 
 (*
   method set_line_terminator      : string -> unit
