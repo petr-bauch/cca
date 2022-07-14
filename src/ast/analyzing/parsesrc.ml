@@ -214,7 +214,16 @@ let astcore =
 
 let _ =
   if !use_std_channels then begin
-    let _ = astcore#parse_stdin in ()
+    try
+      while true do
+        try
+          let _ = astcore#parse_stdin in Printf.printf "\n"; flush stdout; ()
+        with
+        | End_of_file -> raise End_of_file
+        | _ -> Printf.printf "\n"; flush stdout; ()
+      done
+    with
+      End_of_file -> ()
   end
   else begin
   if !keyword <> "" then begin
