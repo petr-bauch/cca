@@ -96,3 +96,4 @@ end
 val dummy_entry : entry_t
 val dummy_tree : tree
 val stdin : file
+val stdin_str : file

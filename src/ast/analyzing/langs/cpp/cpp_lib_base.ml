@@ -34,7 +34,7 @@ class tree_builder options =
 
     method build_tree_stdin =
       try
-        let ast = _parser#parse_stdin in
+        let ast = _parser#parse_stdin_str in
         let tree = Cpp_tree.of_ast options ast in
         tree#set_parser_name Scpp.parser_name;
         tree
