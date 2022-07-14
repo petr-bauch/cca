@@ -316,3 +316,4 @@ let dummy_tree = new dummy_tree
 
 let stdin = new file (Tree dummy_tree) "<stdin>"
 
+let stdin_str = new file (Tree dummy_tree) "<string>"
