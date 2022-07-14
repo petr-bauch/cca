@@ -202,6 +202,7 @@ class virtual ['src, 'rawtoken, 'ast] c (env : 'src #Env_base.c) = object (self)
 
   method virtual make_source        : Storage.file -> #Source_base.c
   method virtual make_source_stdin  : #Source_base.c
+  method virtual make_source_stdin_str  : #Source_base.c
 
   method set_search_path_list l = env#set_search_path_list l
   method add_search_path p = env#add_search_path p
@@ -234,6 +235,11 @@ class virtual ['src, 'rawtoken, 'ast] c (env : 'src #Env_base.c) = object (self)
     let _ = env#enter_source (self#make_source_stdin) in
     self#_parse
 
+  method parse_stdin_str =
+    self#parser_init;
+    let _ = env#enter_source (self#make_source_stdin_str) in
+    self#_parse
+
 end (* of class Parserlib_base.c *)
 
 class virtual ['rawtoken, 'ast] sb_c (env : 'src #Env_base.c) = object (self)
@@ -242,5 +248,6 @@ class virtual ['rawtoken, 'ast] sb_c (env : 'src #Env_base.c) = object (self)
   method make_source file  = new Source_base.c file
 
   method make_source_stdin = new Source_base.c Storage.stdin
+  method make_source_stdin_str = new Source_base.c Storage.stdin_str
 
 end (* of class Parserlib_base.sb_c *)
