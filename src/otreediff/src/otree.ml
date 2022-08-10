@@ -2404,20 +2404,15 @@ class [ 'node ] otree2 ?(hash=Xhash.MD5) (root : 'node) (is_whole : bool) =
           else
           input
         in
-        if (String.compare attr_name "cpp:name") = 0 ||
-          (String.compare attr_name "cpp:ident") = 0  ||
-          (String.compare attr_name "cpp:value") = 0 ||
-          (String.compare attr_name "cpp:line") = 0 then
-          ("value", `String (strip_number_prefix strip_name attr_value)) :: []
-        else if (String.compare attr_name "a:loc") = 0 then
+        if String.equal attr_name "cpp:name" ||
+           String.equal attr_name "cpp:ident"  ||
+           String.equal attr_name "cpp:value" ||
+           String.equal attr_name "cpp:line" then
+          ["value", `String (strip_number_prefix strip_name attr_value)]
+        else if String.equal attr_name "a:loc" then
           let split = split_loc attr_value in
           let corr_locs = fix_locs line_dims (List.map (fun a -> int_of_string a) split) in
-          let vals =
-            "line_begin" ::
-            "col_begin" ::
-            "line_end" ::
-            "col_end" :: []
-          in
+          let vals = ["line_begin"; "col_begin"; "line_end"; "col_end"] in
           let wrap_loc_in_json (a: string) (b: int): string * Yojson.Basic.t =
             (a, `Int b)
           in
@@ -2432,23 +2427,19 @@ class [ 'node ] otree2 ?(hash=Xhash.MD5) (root : 'node) (is_whole : bool) =
         let kids_json = List.map (fun a -> `Int a) kids in
         match kids_json with
         | [] -> []
-        | _ :: _ -> ("children", `List kids_json) :: []
+        | _ :: _ -> ["children", `List kids_json]
       in
 
       let get_type type_name = String.sub type_name 4 ((String.length type_name) - 4) in
       let should_strip_name type_name =
-        (String.compare type_name "ClassName" == 0) ||
-        (String.compare type_name "FunctionDefinition" == 0) ||
-        (String.compare type_name "SimpleTypeSpecifier" == 0) ||
-        (String.compare type_name "Identifier" == 0) ||
-        (String.compare type_name "ElaboratedTypeSpecifierStruct" == 0) ||
-        (String.compare type_name "NestedNameSpecifierIdent" == 0) ||
-        (String.compare type_name "EnumHeadName" == 0)
+        List.exists (String.equal type_name)
+          ["ClassName";"FunctionDefinition";"SimpleTypeSpecifier";"Identifier";
+           "ElaboratedTypeSpecifierStruct";"NestedNameSpecifierIdent";"EnumHeadName"]
       in
       let node_to_json node =
         let name, attrs = get_elem_data node in
         let t_name = get_type name in
-        let type_result = ("type", `String (t_name)) :: [] in
+        let type_result = ["type", `String (t_name)] in
         let should_strip = should_strip_name t_name in
         let attr_result = List.flatten (List.map (get_attrs should_strip) attrs) in
         let children_result = get_children (Array.to_list (Array.map get_pre_index node#children)) in

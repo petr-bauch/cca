@@ -55,7 +55,7 @@ class virtual base_c options = object (self)
   method virtual __parse_file : ?proj_root:string -> ?version:Entity.version -> Storage.file -> Spec.tree_t
   method virtual __parse_stdin : Spec.tree_t
 
-  method virtual __parse_json : Yojson.Basic.t
+  method virtual __parse_json : Yojson.Basic.t list
 
   method private _add_extra_source_file tbl ext file =
     let fp = file#fullpath in
@@ -237,8 +237,8 @@ class virtual base_c options = object (self)
       tree#dump_astml_stdout;
 
     method _parse_json =
-      let json_out = self#__parse_json in
-      Yojson.Basic.to_channel stdout json_out; Printf.printf "\n"; flush stdout;
+      let json_outs = self#__parse_json in
+      List.iter (fun json_out -> Yojson.Basic.to_channel stdout json_out; Printf.printf "\n"; flush stdout;) json_outs
 
   method _parse_file
       ?(fact_store=None)
@@ -439,65 +439,45 @@ class c options = object (self)
     let lang = Lang_base.search options ext in
     let builder = lang#make_tree_builder options in
     let source_str = read_line() in
-    let json = Yojson.Basic.from_string source_str in
-    let code_strings =
-      [json]
-        |> Yojson.Basic.Util.flatten
+
+    let process_one_json (in_json: Yojson.Basic.t): Yojson.Basic.t = 
+      let code_strings =
+        [in_json]
         |> Yojson.Basic.Util.filter_member "code"
         |> Yojson.Basic.Util.filter_string
+      in
+      let code_string =
+        try
+          List.hd code_strings
+        with
+        | _ ->  ""
+      in
+      let tree =
+        try
+           Some(builder#build_tree_json (List.hd code_strings))
+        with
+        | _ -> None
+      in
+      let tree_json : (string * Yojson.Basic.t) list = [("tree",
+        match tree with
+        | None -> `List []
+        | Some(t) -> t#dump_to_json code_string)]
+      in
+      let all_other_items_json : (string * Yojson.Basic.t) list =
+        try
+          [in_json]
+          |> Yojson.Basic.Util.filter_assoc
+          |> List.flatten
+        with 
+        | _ -> []
+      in
+      `Assoc (tree_json @ all_other_items_json)
     in
-    let strings_head_json (name: string) (l: string list): (string * Yojson.Basic.t) list =
-      try
-        (name, `String (List.hd l)) :: []
-      with
-      | _ -> []
-    in
-    let code_string =
-      try
-        List.hd code_strings
-      with
-      | _ ->  ""
-    in
-    let tree =
-      try
-         Some(builder#build_tree_json (List.hd code_strings))
-      with
-      | _ -> None
-    in
-    let file_names =
-      [json]
-        |> Yojson.Basic.Util.flatten
-        |> Yojson.Basic.Util.filter_member "file_name"
-        |> Yojson.Basic.Util.filter_string
-    in
-    let projects =
-      [json]
-        |> Yojson.Basic.Util.flatten
-        |> Yojson.Basic.Util.filter_member "project"
-        |> Yojson.Basic.Util.filter_string
-    in
-    let ids =
-      [json]
-        |> Yojson.Basic.Util.flatten
-        |> Yojson.Basic.Util.filter_member "id"
-        |> Yojson.Basic.Util.filter_string
-    in
-    let hashes =
-      [json]
-        |> Yojson.Basic.Util.flatten
-        |> Yojson.Basic.Util.filter_member "hash"
-        |> Yojson.Basic.Util.filter_string
-    in
-    let tree_json = [("tree",
-      match tree with
-      | None -> `List []
-      | Some(t) -> t#dump_to_json code_string)]
-    in
-    let file_json = strings_head_json "file_name" file_names in
-    let id_json = strings_head_json "id" ids in
-    let project_json = strings_head_json "project" projects in
-    let hash_json = strings_head_json "hash" hashes in
-    `Assoc (tree_json @ file_json @ id_json @ project_json @ hash_json)
+    let json = Yojson.Basic.from_string source_str in
+    try
+      List.map process_one_json (Yojson.Basic.Util.to_list json)
+    with
+    | _ -> []
 
   method __parse_file ?(proj_root="") ?(version=Entity.unknown_version) file =
     DEBUG_MSG "parsing \"%s\"" file#fullpath;
