@@ -43,4 +43,6 @@ class c : Storage.file -> object
   method tree : Storage.tree
   method update_encoding : Netconversion.encoding -> unit
   method ustring_length : ?range_pos:int -> ?range_len:int -> string -> int
+  method set_code : string -> unit
+  method get_code : string
 end

@@ -37,9 +37,11 @@ class parser_c : object
   method make_source : Storage.file -> Source.c
   method make_source_stdin : Source.c
   method make_source_stdin_str : Source.c
+  method make_source_stdin_json : Source.c
   method parse_file : Storage.file -> Ast.c
   method parse_stdin : Ast.c
   method parse_stdin_str : Ast.c
+  method parse_stdin_json : string -> Ast.c
   method parser_init : unit
   method set_token_hist_flag : unit -> unit
   method set_keep_going_flag : unit

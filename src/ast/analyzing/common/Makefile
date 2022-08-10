@@ -11,7 +11,7 @@ INCLS = -I $(OTREEDIFF_DIR) -I $(UTIL_DIR) -I $(MLDIFF_DIR)
 COMPFLAGS = -g $(INCLS)
 COMPFLAGS_OPT = $(INCLS)
 
-PACKAGES = -package csv,uuidm,netstring,pxp,volt
+PACKAGES = -package csv,uuidm,netstring,pxp,volt,yojson
 
 DEP_INCLS = -I $(OTREEDIFF_DIR) -I $(UTIL_DIR)
 
