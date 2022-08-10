@@ -35,6 +35,8 @@ class virtual tree_builder = object (self)
 
   method virtual build_tree_stdin : tree_t
 
+  method virtual build_tree_json : string -> tree_t
+
 
   method digest file =
     let tree = self#build_tree file in

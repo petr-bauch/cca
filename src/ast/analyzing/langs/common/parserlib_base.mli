@@ -72,9 +72,11 @@ class virtual ['a, 'rawtoken, 'ast] c : ('a #Env_base.c as 'b) -> object
   method virtual make_source : Storage.file -> 'a
   method virtual make_source_stdin : 'a
   method virtual make_source_stdin_str : 'a
+  method virtual make_source_stdin_json : 'a
   method parse_file : Storage.file -> 'ast
   method parse_stdin : 'ast
   method parse_stdin_str : 'ast
+  method parse_stdin_json : string -> 'ast
   method parser_init : unit
   method set_keep_going_flag : unit
   method set_search_path_list : string list -> unit
@@ -94,9 +96,11 @@ class virtual ['rawtoken, 'ast] sb_c : (Source_base.c #Env_base.c as 'a) -> obje
   method make_source : Storage.file -> Source_base.c
   method make_source_stdin : Source_base.c
   method make_source_stdin_str : Source_base.c
+  method make_source_stdin_json : Source_base.c
   method parse_file : Storage.file -> 'ast
   method parse_stdin : 'ast
   method parse_stdin_str : 'ast
+  method parse_stdin_json : string -> 'ast
   method parser_init : unit
   method set_keep_going_flag : unit
   method set_search_path_list : string list -> unit
