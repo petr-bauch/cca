@@ -28,7 +28,7 @@ MLI =
 LIB_OBJS = common.cmo UID.cmo GIndex.cmo path.cmo otree.cmo edit.cmo mapping.cmo \
 	clustering.cmo LACS.cmo ZS.cmo lib.cmo
 
-PACKAGES = -package unix,bigarray,volt
+PACKAGES = -package unix,bigarray,volt,yojson
 
 LIB_OBJS_OPT = $(LIB_OBJS:.cmo=.cmx)
 OBJS_OPT = $(OBJS:.cmo=.cmx) 

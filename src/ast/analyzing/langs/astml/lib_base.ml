@@ -166,6 +166,11 @@ let build_tree_stdin options =
   let tree = build_tree options file in
   tree
 
+let build_tree_json options str =
+  let file = Fs.file_of_path options "/tmp" in
+  let tree = build_tree options file in
+  tree
+
 
 type astml_header =
     { mutable h_parser        : string;
@@ -286,6 +291,7 @@ class tree_builder options = object (self)
   method from_xnode = T.of_xnode options
   method build_tree file = build_tree options file
   method build_tree_stdin = build_tree_stdin options
+  method build_tree_json str = build_tree_json options str
 end
 
 
@@ -344,5 +350,6 @@ class ext_tree_builder xpname options = object (self)
   method build_tree file = build_tree options (self#get_astml_file file)
 
   method build_tree_stdin = build_tree_stdin options
+  method build_tree_json str = build_tree_json options str
 
 end

@@ -22736,6 +22736,9 @@ module F (Stat : Aux.STATE_T) = struct
         if src#filename = "<stdin>" then begin
           src#get_ulexbuf_from_stdin
         end
+        else if src#filename = "<json>" then begin
+            Ulexing.from_utf8_string src#get_code
+        end
         else if src#filename = "<string>" then begin
           let source_string = read_line() in
           let modified_string = Str.global_replace (Str.regexp_string "__DEEPCODE_NEW_LINE__") "\n" source_string in
