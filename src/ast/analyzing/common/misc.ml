@@ -289,7 +289,7 @@ let get_home_dir () =
   with
     Not_found ->
       let d = Filename.get_temp_dir_name() in
-      WARN_MSG "could not find HOME, setting HOME to %s" d;
+      (* WARN_MSG "could not find HOME, setting HOME to %s" d; *)
       d
 
 exception File_found of string
