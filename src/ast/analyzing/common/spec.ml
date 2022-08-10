@@ -130,6 +130,7 @@ class type tree_t = object ('self)
 
   method dump_astml               : ?comp:Compression.c -> string -> unit
   method dump_astml_stdout        : unit
+  method dump_to_json             : string -> Yojson.Basic.t
 
 (*
   method set_line_terminator      : string -> unit

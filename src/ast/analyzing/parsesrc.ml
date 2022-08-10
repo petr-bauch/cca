@@ -28,6 +28,7 @@ let get_cache_dir_only = ref false
 let filenames = (ref [] : string list ref)
 let keyword = ref ""
 let use_std_channels = ref false
+let use_std_json = ref false
 
 
 (* setters *)
@@ -116,6 +117,7 @@ let speclist =
    "-dump:ast:compress", Arg.Unit set_dump_compressed_ast_flags, "\tdump compressed AST";
 
    "-use_std_channels", Arg.Set use_std_channels,"\tuse stdin/stdout";
+   "-use_std_json", Arg.Set use_std_json,"\tuse stdin/stdout in JSON";
 
 (* cache *)
    "-cache", Arg.String options#set_cache_dir_base,
@@ -221,6 +223,18 @@ let _ =
         with
         | End_of_file -> raise End_of_file
         | _ -> Printf.printf "\n"; flush stdout; ()
+      done
+    with
+      End_of_file -> ()
+  end
+  else if !use_std_json then begin
+    try
+      while true do
+        try
+          astcore#parse_json;
+        with
+        | End_of_file -> raise End_of_file
+        | e -> Printf.eprintf "exception found: %s\n" (Printexc.to_string e); flush stderr; Printf.printf "\n"; flush stdout; ()
       done
     with
       End_of_file -> ()

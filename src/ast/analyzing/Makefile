@@ -109,7 +109,7 @@ OTHER_OBJS_DEP_OPT = $(OTHER_OBJS_DEP:.cmo=.cmx)
 
 PACKAGES = -package pxp,ulex,str,csv,bigarray,num,zip,menhirLib
 PACKAGES += -package cryptokit,netclient
-PACKAGES += -package netzip,uuidm,dynlink,volt
+PACKAGES += -package netzip,uuidm,dynlink,volt,yojson
 
 PACKAGES_WS = $(PACKAGES) -package pcre,sqlite3,netcgi2,netclient,nethttpd
 

@@ -42,6 +42,15 @@ class tree_builder options =
         Parserlib_base.Parse_error(head, msg) ->
         raise (Lang_base.Parse_error ("[Cpp]"^head, msg))
 
+     method build_tree_json (code: string) =
+      try
+        let ast = _parser#parse_stdin_json code in
+        let tree = Cpp_tree.of_ast options ast in
+        tree#set_parser_name Scpp.parser_name;
+        tree
+      with
+        Parserlib_base.Parse_error(head, msg) ->
+        raise (Lang_base.Parse_error ("[Cpp]"^head, msg))
 
     method build_tree file =
       Xprint.verbose options#verbose_flag "parsing \"%s\"...%!" file#fullpath;
