@@ -2356,6 +2356,110 @@ class [ 'node ] otree2 ?(hash=Xhash.MD5) (root : 'node) (is_whole : bool) =
       with 
 	Empty -> "<empty>"
 
+    method store_to_json (code_text: string): Yojson.Basic.t =
+      let get_elem_data nd =
+	      let name, attrs, _ = nd#data#to_elem_data in
+	      name, attrs
+      in
+      let prepend_up_one (indices: (int * int * int) list) (c: char): (int * int * int) list =
+        match indices with
+        | [] -> []
+        | (x,y,z) :: xs ->
+          if c = '\n' then
+            (x+1,z+1,z+1) :: (x,y,z) :: xs
+          else
+            (x,y,z+1) :: (x,y,z) :: xs
+      in
+      let line_dims_rev_list = String.fold_left prepend_up_one ((1,0,0) :: []) code_text in
+      let line_dims = Array.of_list (List.rev_map (fun (a,b,c) -> (a,b)) line_dims_rev_list) in
+      let fix_locs (line_dims: (int * int) array) (locs: int list): int list =
+        match locs with
+        | _ :: locs_1_off :: _ :: locs_3_off :: [] ->
+          let locs_1 = if locs_1_off = 0 then 0 else locs_1_off + 1 in
+          let locs_3 = locs_3_off + 1 in
+          let (from_line_id, from_line_begin) = Array.get line_dims locs_1 in
+          let from_col_id = locs_1 - from_line_begin in
+          let (to_line_id, to_line_begin) = Array.get line_dims locs_3 in
+          let to_col_id = locs_3 - to_line_begin in
+          from_line_id :: (from_col_id + 1) :: to_line_id :: (to_col_id + 1):: []
+        | _ -> locs
+      in
+      let split_loc (v: string): string list =
+        let loc_re = Str.regexp "\\([0-9]+\\):\\([0-9]+\\)(.*)-\\([0-9]+\\):\\([0-9]+\\)(.*)" in
+        if Str.string_match loc_re v 0 then
+          (Str.matched_group 1 v) :: (Str.matched_group 2 v) ::
+          (Str.matched_group 3 v) :: (Str.matched_group 4 v) :: []
+        else
+          []
+      in
+      let get_attrs (strip_name: bool) (av: string * string): (string * Yojson.Basic.t) list =
+        let (attr_name, attr_value) = av in
+        let strip_number_prefix (apply: bool) (input: string): string =
+          if apply then
+            let name_re = Str.regexp "[0-9]*\\([^0-9].*\\)" in
+            if Str.string_match name_re input 0 then
+              Str.matched_group 1 input
+            else
+              input
+          else
+          input
+        in
+        if (String.compare attr_name "cpp:name") = 0 ||
+          (String.compare attr_name "cpp:ident") = 0  ||
+          (String.compare attr_name "cpp:value") = 0 ||
+          (String.compare attr_name "cpp:line") = 0 then
+          ("value", `String (strip_number_prefix strip_name attr_value)) :: []
+        else if (String.compare attr_name "a:loc") = 0 then
+          let split = split_loc attr_value in
+          let corr_locs = fix_locs line_dims (List.map (fun a -> int_of_string a) split) in
+          let vals =
+            "line_begin" ::
+            "col_begin" ::
+            "line_end" ::
+            "col_end" :: []
+          in
+          let wrap_loc_in_json (a: string) (b: int): string * Yojson.Basic.t =
+            (a, `Int b)
+          in
+          try
+             List.map2 wrap_loc_in_json vals corr_locs
+          with Invalid_argument _ -> []
+        else
+          []
+      in
+      let get_pre_index node = node#preorder_index - 1 in
+      let get_children (kids: int list) : (string * Yojson.Basic.t) list =
+        let kids_json = List.map (fun a -> `Int a) kids in
+        match kids_json with
+        | [] -> []
+        | _ :: _ -> ("children", `List kids_json) :: []
+      in
+
+      let get_type type_name = String.sub type_name 4 ((String.length type_name) - 4) in
+      let should_strip_name type_name =
+        (String.compare type_name "ClassName" == 0) ||
+        (String.compare type_name "FunctionDefinition" == 0) ||
+        (String.compare type_name "SimpleTypeSpecifier" == 0) ||
+        (String.compare type_name "Identifier" == 0) ||
+        (String.compare type_name "ElaboratedTypeSpecifierStruct" == 0) ||
+        (String.compare type_name "NestedNameSpecifierIdent" == 0) ||
+        (String.compare type_name "EnumHeadName" == 0)
+      in
+      let node_to_json node =
+        let name, attrs = get_elem_data node in
+        let t_name = get_type name in
+        let type_result = ("type", `String (t_name)) :: [] in
+        let should_strip = should_strip_name t_name in
+        let attr_result = List.flatten (List.map (get_attrs should_strip) attrs) in
+        let children_result = get_children (Array.to_list (Array.map get_pre_index node#children)) in
+        `Assoc (type_result @ attr_result @ children_result)
+      in
+
+      let rec flat_tree node =
+        (node_to_json node) :: List.flatten (List.map flat_tree (Array.to_list node#children))
+      in
+      `List (flat_tree self#root)
+
     method dump_xml_stdout
       =
       let initial = false in
@@ -2495,6 +2599,9 @@ class [ 'node ] otree2 ?(hash=Xhash.MD5) (root : 'node) (is_whole : bool) =
       _output_string post_tags
 
     method save_in_stdout = self#dump_xml_stdout
+
+    method save_in_json (code_text: string) =
+      self#store_to_json code_text
 
     method save_in_xml ?(initial=false) ?(comp=Comp.none) ?(add_ext=true) ?(pre_tags="") ?(post_tags="") fname = 
       Xchannel.dump ~comp ~add_ext fname (self#dump_xml_ch ~initial ~pre_tags ~post_tags)

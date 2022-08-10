@@ -47,6 +47,8 @@ class c (file : Storage.file) =
 
     val mutable ulexbuf_list = []
 
+    val mutable code_text : string = ""
+
     method reset_feed = Queue.clear queue
 
     method update_encoding enc =
@@ -55,6 +57,12 @@ class c (file : Storage.file) =
       create_cursor <- NC.create_cursor enc
 
     method ustring_length = ustring_length
+
+    method set_code (input : string) =
+      code_text <- input;
+
+    method get_code = code_text
+
     method create_cursor = create_cursor
 
     method tree = tree

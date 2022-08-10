@@ -66,6 +66,7 @@ class parser_c = object (self)
   method make_source file  = new Source.c file
   method make_source_stdin = new Source.c Storage.stdin
   method make_source_stdin_str = new Source.c Storage.stdin_str
+  method make_source_stdin_json = new Source.c Storage.stdin_json
   method _parse = _parse()
 
   method lines_read = env#current_pos_mgr#lines_read
