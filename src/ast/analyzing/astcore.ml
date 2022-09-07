@@ -455,10 +455,13 @@ class c options = object (self)
         | _ ->  ""
       in
       let tree =
-        try
-           Some(builder#build_tree_json (List.hd code_strings))
-        with
-        | _ -> None
+        if code_string <> "" then
+          try
+             Some(builder#build_tree_json (List.hd code_strings))
+          with
+          | _ -> None
+        else
+          None
       in
       let tree_json : (string * Yojson.Basic.t) list = [("tree",
         match tree with
