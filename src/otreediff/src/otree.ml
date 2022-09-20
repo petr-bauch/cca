@@ -2434,7 +2434,8 @@ class [ 'node ] otree2 ?(hash=Xhash.MD5) (root : 'node) (is_whole : bool) =
       let should_strip_name type_name =
         List.exists (String.equal type_name)
           ["ClassName";"FunctionDefinition";"SimpleTypeSpecifier";"Identifier";
-           "ElaboratedTypeSpecifierStruct";"NestedNameSpecifierIdent";"EnumHeadName"]
+           "ElaboratedTypeSpecifierStruct";"ElaboratedTypeSpecifierClass";
+           "ElaboratedTypeSpecifierEnum";"NestedNameSpecifierIdent";"EnumHeadName"]
       in
       let node_to_json node =
         let name, attrs = get_elem_data node in
