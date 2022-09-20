@@ -27,23 +27,7 @@ else
 PARSER_GENERATOR = $(OCAMLYACC)
 endif
 
-ifdef STRIP_INFO_LOGGERS
-ifneq (,$(findstring volt,$(PACKAGES)))
-SYNTAX := $(SYNTAX) -ppopt -level -ppopt WARN
-endif
-endif
-
-ifdef STRIP_DEBUG_LOGGERS
-ifneq (,$(findstring volt,$(PACKAGES)))
-SYNTAX := $(SYNTAX) -ppopt -level -ppopt INFO
-endif
-endif
-
-ifdef STRIP_ALL_LOGGERS
-ifneq (,$(findstring volt,$(PACKAGES)))
 SYNTAX := $(SYNTAX) -ppopt -level -ppopt NONE
-endif
-endif
 
 ifdef MULTI_THREAD
 COMPFLAGS := $(COMPFLAGS) -thread
@@ -59,7 +43,7 @@ COMPFLAGS_OPT := $(COMPFLAGS_OPT) -O3
 # LINKFLAGS_OPT := $(LINKFLAGS_OPT) -nodynlink
 # endif
 
-PROFFLAGS = -g
+#PROFFLAGS = -g
 #PROFFLAGS = -p -g # uncomment this to build for profiling
 
 OCAMLC_MODE = ocamlc
