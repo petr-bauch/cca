@@ -2392,7 +2392,50 @@ class [ 'node ] otree2 ?(hash=Xhash.MD5) (root : 'node) (is_whole : bool) =
         else
           []
       in
-      let get_attrs (strip_name: bool) (av: string * string): (string * Yojson.Basic.t) list =
+      let remove_quotes (should_remove_quotes: bool) (s: string) : string =
+        if not should_remove_quotes || Array.mem "-remove-quotes" Sys.argv |> not then s
+        else
+          let len = String.length s in
+          if len < 2 then s
+          else
+            let last = s.[String.length s - 1] in
+            let prefixes_and_string =
+              match String.index_opt s '\'' with
+              | Some index ->
+                if last <> '\'' || index = String.length s - 1 then None
+                else Some (String.sub s 0 index, String.sub s index (String.length s - index))
+              | None ->
+                match String.index_opt s '"' with
+                | Some index ->
+                  if last <> '"' || index = String.length s - 1 then None
+                  else Some (String.sub s 0 index, String.sub s index (String.length s - index))
+                | None -> None
+            in
+            match prefixes_and_string with
+            | None -> s
+            | Some (prefixes, s) ->
+              let first = s.[0] in
+              let aux_raw_literals (s: string) : string =
+                let open_parens = String.index_opt s '(' in
+                let close_parens = String.rindex_opt s ')' in
+                match open_parens, close_parens with
+                | None, _ | _, None -> s
+                | Some open_parens, Some close_parens ->
+                  if open_parens >= close_parens then s
+                  else
+                    let open_tag = String.sub s 1 (open_parens - 1) in
+                    let close_tag = String.sub s (close_parens + 1) (String.length s - close_parens - 2) in
+                    if open_tag <> close_tag then s
+                    else
+                      String.sub s (open_parens + 1) (close_parens - open_parens - 1)
+              in
+              match first, last with
+              | '\'', '\'' -> String.sub s 1 (String.length s - 2)
+              | '"', '"' when String.contains prefixes 'R' -> aux_raw_literals s
+              | '"', '"' -> String.sub s 1 (String.length s - 2)
+              | _ -> s
+      in
+      let get_attrs ~should_strip:(strip_name: bool) ~(should_remove_quotes: bool) (av: string * string): (string * Yojson.Basic.t) list =
         let (attr_name, attr_value) = av in
         let strip_number_prefix (apply: bool) (input: string): string =
           if apply then
@@ -2408,7 +2451,7 @@ class [ 'node ] otree2 ?(hash=Xhash.MD5) (root : 'node) (is_whole : bool) =
            String.equal attr_name "cpp:ident"  ||
            String.equal attr_name "cpp:value" ||
            String.equal attr_name "cpp:line" then
-          ["value", `String (strip_number_prefix strip_name attr_value)]
+          ["value", `String (attr_value |> strip_number_prefix strip_name |> remove_quotes should_remove_quotes)]
         else if String.equal attr_name "a:loc" then
           let split = split_loc attr_value in
           let corr_locs = fix_locs line_dims (List.map (fun a -> int_of_string a) split) in
@@ -2437,12 +2480,14 @@ class [ 'node ] otree2 ?(hash=Xhash.MD5) (root : 'node) (is_whole : bool) =
            "ElaboratedTypeSpecifierStruct";"ElaboratedTypeSpecifierClass";
            "ElaboratedTypeSpecifierEnum";"NestedNameSpecifierIdent";"EnumHeadName"]
       in
+      let should_remove_quotes type_name = List.exists (String.equal type_name) ["StringLiteral"; "CharacterLiteral"] in
       let node_to_json node =
         let name, attrs = get_elem_data node in
         let t_name = get_type name in
         let type_result = ["type", `String (t_name)] in
         let should_strip = should_strip_name t_name in
-        let attr_result = List.flatten (List.map (get_attrs should_strip) attrs) in
+        let should_remove_quotes = should_remove_quotes t_name in
+        let attr_result = List.flatten (List.map (get_attrs ~should_strip ~should_remove_quotes) attrs) in
         let children_result = get_children (Array.to_list (Array.map get_pre_index node#children)) in
         `Assoc (type_result @ attr_result @ children_result)
       in
