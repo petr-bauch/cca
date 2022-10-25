@@ -183,6 +183,7 @@ let speclist =
    "-incompleteinfo", Arg.Unit (fun () -> options#set_incomplete_info_flag),
    "\tsome parts of info are omitted in AST (for counting nodes only)";
 
+  "-remove-quotes", Arg.Unit (fun () -> ()), "Dummy, to remove later";
  ]
 
 let _ =
