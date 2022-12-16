@@ -2381,7 +2381,7 @@ class [ 'node ] otree2 ?(hash=Xhash.MD5) (root : 'node) (is_whole : bool) =
           let from_col_id = locs_1 - from_line_begin in
           let (to_line_id, to_line_begin) = Array.get line_dims locs_3 in
           let to_col_id = locs_3 - to_line_begin in
-          from_line_id :: (from_col_id + 1) :: to_line_id :: (to_col_id + 1):: []
+          from_line_id :: (from_col_id + 1) :: to_line_id :: (to_col_id + 2):: []
         | _ -> locs
       in
       let split_loc (v: string): string list =
