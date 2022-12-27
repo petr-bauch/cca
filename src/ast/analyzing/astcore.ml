@@ -430,7 +430,7 @@ class c options = object (self)
     options#dump_ast_flag || options#clear_cache_flag
 
   method __parse_stdin =
-     let ext = "cpp" in
+    let ext = "cpp" in
     let lang = Lang_base.search options ext in
     let builder = lang#make_tree_builder options in
     let tree = builder#build_tree_stdin in
@@ -479,10 +479,7 @@ class c options = object (self)
       `Assoc (tree_json @ all_other_items_json)
     in
     let json = Yojson.Basic.from_string source_str in
-    try
-      List.map process_one_json (Yojson.Basic.Util.to_list json)
-    with
-    | _ -> []
+    List.map process_one_json (Yojson.Basic.Util.to_list json)
 
   method __parse_file ?(proj_root="") ?(version=Entity.unknown_version) file =
     DEBUG_MSG "parsing \"%s\"" file#fullpath;
