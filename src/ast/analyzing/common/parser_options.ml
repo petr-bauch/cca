@@ -70,6 +70,17 @@ class c = object (self)
   method set_dump_dot_flag = dump_dot_flag <- true
   method clear_dump_dot_flag = dump_dot_flag <- false
 
+  val mutable timeout : float option = None
+  method timeout = timeout
+  method set_timeout_from_float t =
+    if Float.(compare t zero) = 0
+    then timeout <- None
+    else timeout <- Some t
+  method set_timeout t =
+    match t with
+    | None -> timeout <- None
+    | Some t -> self#set_timeout_from_float t
+
 
   (* cache *)
   val mutable layered_cache_flag = true

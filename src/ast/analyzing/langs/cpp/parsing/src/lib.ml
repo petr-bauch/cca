@@ -38,6 +38,9 @@ class parser_c = object (self)
   val mutable token_hist_flag = false
   val mutable parse_macro_defs_flag = true
 
+  val mutable timeout : float option = None
+  method set_timeout (t: float option) = timeout <- t
+
   val mutable scanner = Obj.magic ()
   val mutable _parse = fun () -> Obj.magic ()
 
@@ -1457,8 +1460,21 @@ class parser_c = object (self)
       end
       | None -> _menv
     in
-
+    let start_time : float option ref = ref None in
+    let it : int ref = ref 0 in
     let rec loop ckpt =
+      let () =
+        match !start_time, timeout with
+        | None, _ | _, None -> ()
+        | Some start_time, Some timeout ->
+          incr it;
+          if !it > 1000 then begin
+            it := 0;
+            let current_time = Unix.gettimeofday () in
+            if Float.compare (current_time -. start_time) timeout > 0 then
+              raise (Failure "timeout")
+          end
+      in
       match ckpt with
       | I.InputNeeded _menv -> begin
           let tok = scanner#get_token() in
@@ -5169,9 +5185,14 @@ class parser_c = object (self)
 
     _parse <- fun () ->
       try
-        do_parse()
+        start_time := Some (Unix.gettimeofday ());
+        it := 0;
+        let ast = do_parse() in
+        start_time := None;
+        ast
       with
         Failed_to_parse pos ->
+          start_time := None;
           let fn = env#current_source#file#fullpath in
           let ln = pos.Lexing.pos_lnum in
           let line = ref "" in

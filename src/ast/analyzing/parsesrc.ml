@@ -183,7 +183,9 @@ let speclist =
    "-incompleteinfo", Arg.Unit (fun () -> options#set_incomplete_info_flag),
    "\tsome parts of info are omitted in AST (for counting nodes only)";
 
+(* Deepcode flags *)
   "-remove-quotes", Arg.Unit (fun () -> ()), "Dummy, to remove later";
+  "-timeout", Arg.Float options#set_timeout_from_float, "\tTimeout as float, in seconds. If not given or 0, no timeout.";
  ]
 
 let _ =

@@ -455,18 +455,16 @@ class c options = object (self)
         | _ ->  ""
       in
       let tree =
-        if code_string <> "" then
+        if String.equal code_string "" then Either.Right "Empty string" else
           try
-             Some(builder#build_tree_json (List.hd code_strings))
+             Either.Left (builder#build_tree_json (List.hd code_strings))
           with
-          | _ -> None
-        else
-          None
+          | e -> Either.Right (Printexc.to_string e)
       in
-      let tree_json : (string * Yojson.Basic.t) list = [("tree",
+      let tree_json : (string * Yojson.Basic.t) list =
         match tree with
-        | None -> `List []
-        | Some(t) -> t#dump_to_json code_string)]
+        | Either.Left tree -> ["tree", tree#dump_to_json code_string]
+        | Either.Right error_str -> ["error", `String error_str]
       in
       let all_other_items_json : (string * Yojson.Basic.t) list =
         try

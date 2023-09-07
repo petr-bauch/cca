@@ -2393,7 +2393,7 @@ class [ 'node ] otree2 ?(hash=Xhash.MD5) (root : 'node) (is_whole : bool) =
           []
       in
       let remove_quotes (should_remove_quotes: bool) (s: string) : string =
-        if not should_remove_quotes || Array.mem "-remove-quotes" Sys.argv |> not then s
+        if not should_remove_quotes then s
         else
           let len = String.length s in
           if len < 2 then s

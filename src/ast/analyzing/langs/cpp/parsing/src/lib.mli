@@ -29,6 +29,7 @@ class parser_c : object
   method _parse : Ast.c
   method _set_keep_going_flag : bool -> unit
   method _set_verbose_flag : bool -> unit
+  method set_timeout : float option -> unit
   method add_search_path : string -> unit
   method clear_keep_going_flag : unit
   method clear_verbose_flag : unit

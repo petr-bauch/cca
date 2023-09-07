@@ -71,6 +71,7 @@ class tree_builder options =
     initializer
       _parser#_set_verbose_flag options#verbose_flag;
       _parser#_set_keep_going_flag options#keep_going_flag;
+      _parser#set_timeout options#timeout;
 
       _parser#set_search_path_list options#search_path_list;
 
