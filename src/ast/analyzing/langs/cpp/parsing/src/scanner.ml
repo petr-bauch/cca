@@ -28032,8 +28032,16 @@ module F (Stat : Aux.STATE_T) = struct
       | _ -> n
 
 
+    val mutable it = 0
     method get_token () =
       try
+        let () =
+            it <- it + 1;
+            if it > 1000 then begin
+              it <- 0;
+              if env#is_deadline_expired then raise (Failure "timeout")
+            end
+        in
         self#_get_token()
       with
         To_be_recovered -> self#get_token()

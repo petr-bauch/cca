@@ -272,5 +272,19 @@ class ['src] c = object (self)
 
   method set_enter_source_callback f = enter_source_callback <- f
 
-
+  val mutable timeout : float option = None
+  val mutable deadline : float option = None
+  method set_timeout (d: float option) : unit = timeout <- d
+  method init_deadline : unit =
+    match timeout with
+    | None -> ()
+    | Some timeout -> deadline <- Some ((Unix.gettimeofday ()) +. timeout)
+  method reset_deadline : unit = deadline <- None
+  method deadline : float option = deadline
+  method is_deadline_expired : bool =
+    match deadline with
+    | None -> false
+    | Some deadline ->
+      let current_time = Unix.gettimeofday () in
+      Float.compare current_time deadline > 0
 end (* of class Env_base.c *)

@@ -46,4 +46,10 @@ class ['b] c : object
   method source_entered : 'b -> bool
   method verbose : bool
   method verbose_msg : ('a, unit, string, unit) format4 -> 'a
+
+  method set_timeout : float option -> unit
+  method init_deadline : unit
+  method reset_deadline : unit
+  method deadline : float option
+  method is_deadline_expired : bool
 end

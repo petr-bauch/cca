@@ -246,7 +246,10 @@ class virtual ['src, 'rawtoken, 'ast] c (env : 'src #Env_base.c) = object (self)
     let sb = self#make_source_stdin_json in
     sb#set_code code;
     let _ = env#enter_source sb in
-    self#_parse
+    let () = env#init_deadline in
+    let ast = self#_parse in
+    let () = env#reset_deadline in
+    ast
 
 end (* of class Parserlib_base.c *)
 
