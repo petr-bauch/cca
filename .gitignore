@@ -2,7 +2,6 @@
 *.cmo
 *.cmi
 *.cmx
-*.cmxs
 *.cmxa
 *.annot
 *.output
@@ -13,7 +12,6 @@
 *.class
 *.d
 *.di
-*.opt
 *.pyc
 tmp
 diffviewer/DiffViewer-darwin-x64

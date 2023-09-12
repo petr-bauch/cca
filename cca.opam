@@ -31,6 +31,8 @@ depends: [
   "pxp"
   "uuidm"
   "volt"
+  "camlp-streams"
+  "yojson"
 ]
 available: arch != "x86_32" & arch != "arm32" & arch != "ppc64"
 synopsis: "A framework for code continuity analysis"

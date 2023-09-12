@@ -1,0 +1,57 @@
+version: 2.1
+
+executors:
+  default:
+    working_directory: ~/cca
+    docker:
+      - image: cimg/base:2023.09
+    resource_class: large
+
+jobs:
+  build:
+    executor: default
+    steps:
+      - checkout
+      - when:
+          condition:
+            not:
+              equal: [release-deepcode, << pipeline.git.branch >>]
+          steps:
+            - run:
+                name: install, update opam, build cca
+                command: |
+                  sudo apt-get update
+                  sudo apt-get install -y libgmp3-dev libpcre3-dev
+                  sudo apt-get install -y opam
+                  opam init -a --bare --disable-sandboxing
+                  opam switch create 4.14.1
+                  opam update
+                  opam upgrade -y
+                  eval $(opam env)
+                  opam install ./cca.opam -y
+                  mkdir -p /tmp/cca
+                  rm -rf /tmp/cca/*
+                  cp -r $OPAM_SWITCH_PREFIX/lib/cca /tmp/cca/modules
+                  cp -r $OPAM_SWITCH_PREFIX/bin/cca /tmp/cca/bin
+                  cp -r $OPAM_SWITCH_PREFIX/etc/cca /tmp/cca/etc
+      - when:
+          condition:
+            equal: [main, << pipeline.git.branch >>]
+          steps:
+            - run:
+                name: configure git
+                command: |
+                  git config user.email "deploy@snyk.io"
+                  git config user.name "Cca Repo"
+                  echo -e $GPG_KEY_SNYK_DEPLOYER | gpg --import
+                  git config commit.gpgsign true
+                  git config user.signingkey $GPG_KEY_SNYK_DEPLOYER_FINGERPRINT
+            - run:
+                name: publish as new branch
+                command: |
+                  git remote update origin --prune
+                  git checkout release-deepcode
+                  cp -r /tmp/cca/* ./release/
+                  git add -u .
+                  git commit -m "add new version of artifacts"
+                  git push origin release-deepcode\:refs/heads/release-deepcode
