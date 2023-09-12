@@ -464,7 +464,7 @@ class c options = object (self)
       let tree_json : (string * Yojson.Basic.t) list =
         match tree with
         | Either.Left tree -> ["tree", tree#dump_to_json code_string]
-        | Either.Right error_str -> ["error", `String error_str]
+        | Either.Right error_str -> ["parse_error", `String error_str]
       in
       let all_other_items_json : (string * Yojson.Basic.t) list =
         try
